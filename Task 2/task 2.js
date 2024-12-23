@@ -1,4 +1,4 @@
-function promiseMap(array, callback) {
+function processArrayWithPromises(array, callback) {
     const promises = array.map(item => callback(item)); 
     return Promise.all(promises); 
 }
@@ -14,7 +14,7 @@ async function demoFunc() {
     };
 
     try {
-        const results1 = await promiseMap(numbers, promiseTriple);
+        const results1 = await processArrayWithPromises(numbers, promiseTriple);
         console.log(results1); 
     } catch (error) {
         console.error('Error in case 1:', error); 
@@ -29,7 +29,7 @@ async function demoFunc() {
     };
 
     try {
-        const results2 = await promiseMap(numbers2, promiseSquare);
+        const results2 = await processArrayWithPromises(numbers2, promiseSquare);
         console.log(results2);
     } catch (error) {
         console.error('Error in case 2:', error);
