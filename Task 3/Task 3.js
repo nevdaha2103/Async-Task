@@ -1,4 +1,3 @@
-// Promise-based version of map with cancellation support
 function processArrayWithPromises(array, fn, signal) {
     const promises = array.map((item) => {
         if (signal.aborted) {
@@ -22,7 +21,6 @@ function processArrayWithPromises(array, fn, signal) {
     return Promise.all(promises);
 }
 
-// Async find index with cancellation support
 function asyncFindIndex(array, searchValue, signal) {
     return new Promise((resolve, reject) => {
         if (!Array.isArray(array)) {
@@ -48,12 +46,10 @@ function asyncFindIndex(array, searchValue, signal) {
     });
 }
 
-// Demo function using both map and asyncFindIndex with cancellation
 async function demoFunc() {
     const controller = new AbortController();
     const { signal } = controller;
 
-    // Case 1: Promise Map Example - Triple each number
     const numbers = [1, 2, 3, 4, 5];
     const promiseTriple = (num) => {
         return new Promise((resolve) => {
@@ -72,12 +68,10 @@ async function demoFunc() {
         }
     }
 
-    // Abort after 2 seconds
     setTimeout(() => {
         controller.abort();
     }, 2000);
 
-    // Case 2: Async Find Index Example - Find the index of a number
     const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
     const searchValue = 8;
 
