@@ -1,22 +1,40 @@
-async function asyncFind(array, asyncCallback) {
-    for (let item of array) {
-        if (await asyncCallback(item)) {
-            return item; 
+function asyncFind(array, asyncCallback, finalCallback) {
+    let index = 0;
+
+    function iterate() {
+        if (index >= array.length) {
+            return finalCallback(null, undefined); 
         }
+
+        asyncCallback(array[index], (err, result) => {
+            if (err) {
+                return finalCallback(err); 
+            }
+
+            if (result) {
+                return finalCallback(null, array[index]);
+            }
+
+            index++;
+            iterate();
+        });
     }
-    return undefined; 
+
+    iterate(); 
 }
 
 const numbers = [1, 2, 3, 4, 5];
 
-async function isGreaterThanThree(number) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(number > 3);
-        }, 100);
-    });
+function isGreaterThanThree(number, callback) {
+    setTimeout(() => {
+        callback(null, number > 3);
+    }, 100);
 }
 
-asyncFind(numbers, isGreaterThanThree).then((result) => {
-    console.log('Async find result:', result); 
+asyncFind(numbers, isGreaterThanThree, (err, result) => {
+    if (err) {
+        console.error('Error:', err.message);
+    } else {
+        console.log('Async find result:', result);
+    }
 });
